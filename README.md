@@ -5,7 +5,7 @@ Fork of [USF-CIS-4935/password_manager](https://github.com/USF-CIS-4935/password
 ### Styling
 - CSS made mobile-compatible
 - Move away from \<fieldset\> formatting.
-- Reformat password re-user results (move to a modal)
+- Reformat password re-use results (move to a modal)
 - Re-style buttons to be less ugly
 - Add separation between navigation and page content
 
@@ -19,6 +19,7 @@ Fork of [USF-CIS-4935/password_manager](https://github.com/USF-CIS-4935/password
 
 ### Functionality
 - Dark mode option
+- Add geolocation data to IP addresses in "Login History"
 - Allow custom entropy source(s) for password generation
 - "Password Re-Use" will allow you to select a password card to check
 - Allow for "re-use" check from a button on the password card
