@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use \App\Models\LoginRecord
+use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +13,7 @@ class UserController extends Controller
 {
 
     function return_account_options(){
-      $last_logins = \App\LoginRecord::where('user_id', Auth::user()->id)
+      $last_logins = LoginRecord::where('user_id', Auth::user()->id)
         ->orderByDesc('created_at')
         ->limit(5)
         ->get();

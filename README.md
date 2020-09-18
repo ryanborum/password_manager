@@ -25,8 +25,8 @@ Fork of [USF-CIS-4935/password_manager](https://github.com/USF-CIS-4935/password
 - Allow for "re-use" check from a button on the password card
 
 ### Architecture
-- Upgrade to Laravel 8.X
-- Move Models into dedicated "Models" directory
+- ~~Upgrade to Laravel 8.X~~
+- ~~Refactor models into dedicated "Models" directory~~
 - Tie styling and JS into [Laravel Mix](https://laravel.com/docs/7.x/mix)
 - Encryption of all database content (?)
 

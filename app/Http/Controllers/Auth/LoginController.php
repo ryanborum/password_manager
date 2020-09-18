@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Auth;
 use Illuminate\Http\Request;
-use \App\LoginRecord;
+use \App\Models\LoginRecord;
 
 class LoginController extends Controller
 {
@@ -43,7 +43,7 @@ class LoginController extends Controller
           'user_id' => $user->id,
           'user_ip' => $request->getClientIp(),
           'user_agent' => $request->header('User-Agent')
-        ]);  
+        ]);
       }
     }
 

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Password;
+use App\Models\Password;
 use Auth;
 
 class PasswordController extends Controller
 {
 
   public function show_password_database($pw_exp = false){
-    $passwords = \App\Password::where('user_id', Auth::user()->id)
+    $passwords = Password::where('user_id', Auth::user()->id)
       ->get();
-    $expired_passwords = \App\Password::where('user_id', Auth::user()->id)
+    $expired_passwords = Password::where('user_id', Auth::user()->id)
       ->whereDate('expiration_date', '<=', \Carbon\Carbon::today())
       ->get();
 
