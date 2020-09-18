@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,6 +15,6 @@ class User extends Authenticatable
   protected $casts = ['email_verified_at' => 'datetime'];
 
   public function account_options(){
-    return $this->hasOne('App\AccountOptions', 'user_id');
+    return $this->hasOne('App\Models\AccountOptions', 'user_id');
   }
 }
