@@ -1,94 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
 @include('templates/head-tag', ['title' => 'Password Database'])
 
 <body>
-  @include('templates/left-nav')
   @include('templates/status-notifications')
 
   @if (Auth::user()->account_options->password_age_notification && !$expired_passwords->isEmpty())
-    <div id="pw-expiration-modal" class="modal" style="display: block;">
-      <div class="modal-content">
-        <div class="modal-container">
-          <span class="modal-close-btn">×</span>
-          <p id="modal-header" class="header-text" style="margin-top: 0px; font-size: 30px;">Expired Passwords</p>
-          @foreach ($expired_passwords as $exp_pw)
-            <p>{{ $exp_pw->password_name}} expired on: {{ $exp_pw->expiration_date->format('m/d/y') }}</p>
-          @endforeach
-          <p class="subtitle">You can disable this notification in the <a href="{{ route('acc-options') }}">Account Options</a> page</p>
-        </div>
-      </div>
+  <div id="pw-expiration-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <p class="header-underline font-bebas is-size-2">Expired Passwords</p>
+      <ul>
+        @foreach ($expired_passwords as $exp_pw)
+        <li><strong>{{ $exp_pw->password_name}}</strong> expired on: {{ $exp_pw->expiration_date->format('m/d/y') }}</li>
+        @endforeach
+      </ul>
+      <p class="is-size-6 mt-2">You can disable this notification in the <a href="{{ route('acc-options') }}">Account Options</a> page</p>
     </div>
+  </div>
   @endif
 
   <div id="pw-edit-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-container">
-        <span class="modal-close-btn">×</span>
-        <p id="modal-header" class="header-text" style="margin-top: 0px; font-size: 30px;">Edit A Password</p>
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-white px-4 py-4">
+      <p id="modal-header" class="header-underline font-bebas is-size-2">Edit A Password</p>
 
-        <input id="password_id" type="hidden">
-        <div class="modal-input" style="width: 100%;">
-          <label for="password_name">Name/Title:</label><br>
-          <input id="password_name" type="text" maxlength="255" autocomplete="off">
+      <input id="password_id" type="hidden">
+
+      <div class="field">
+        <label for="password_name" class="label">Name/Title</label>
+        <div class="control">
+          <input id="password_name" class="input" type="text" maxlength="255" autocomplete="off">
         </div>
-        <div class="modal-input" style="width: 47%;">
-          <label for="username_email">Username/Email:</label><br>
-          <input id="username_email" type="text" maxlength="255" autocomplete="off">
-        </div>
-        <div class="modal-input" style="width: 47%; margin-left: 5%;">
-          <label for="saved_password">Password:</label><br>
-          <input id="saved_password" type="text" maxlength="255" autocomplete="off">
-        </div>
-        <div class="modal-input" style="width: 100%;">
-          <label for="notes">Additional Notes:</label><br>
-          <textarea id="notes"></textarea>
-        </div>
-        <div id="config-options" style="display: none;">
-          <hr>
-          <div class="modal-input" style="width: 50%;">
-            <label for="expiration_date">Expiration Date:</label><br>
-            <input id="expiration_date" type="date" autocomplete="off">
-          </div>
-          <div class="modal-input" style="width: 50%;">
-            <span id="last_updated">Last Updated:</span><br>
-            <span id="expires_in">Password Expires In: 10 days</span>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <label for="username_email" class="label">Username/Email</label>
+          <div class="control">
+            <input id="username_email" class="input" type="text" maxlength="255" autocomplete="off">
           </div>
         </div>
-
-        <div class="modal-footer-buttons" style="display: block; margin-top: 15px;">
-          <button class="green-button" id="config-password"><i class="fas fa-cog"></i> Configure Expiration</button>
-          <div class="right-buttons" style="float: right;">
-            <button class="green-button" id="save-password"><i class="fas fa-save"></i> Save</button>
-            <button class="green-button" id="delete-password"><i class="fas fa-trash"></i> Delete</button>
+        <div class="field">
+          <label for="saved_password" class="label">Password</label>
+          <div class="control">
+            <input id="saved_password" class="input" type="text" maxlength="255" autocomplete="off">
           </div>
         </div>
       </div>
+      <div class="field">
+        <label for="expiration_date" class="label">Expiration Date:</label>
+        <input id="expiration_date" class="input" type="date" autocomplete="off">
+        <p id="expires_in" class="help">Password Expires In: 10 Days</p>
+      </div>
+      <div class="field">
+        <label for="notes" class="label">Additional Notes</label>
+        <div class="control">
+          <textarea id="notes" class="textarea"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <span id="last_updated">Last Updated:</span>
+      </div>
+
+      <div class="modal-footer-buttons">
+        <div style="float: right;">
+          <button class="is-primary button" id="save-password"><i class="fas fa-save pr-2"></i> Save</button>
+          <button class="is-primary button" id="delete-password"><i class="fas fa-trash pr-2"></i> Delete</button>
+        </div>
+      </div>
     </div>
+    <button class="modal-close is-large" aria-label="close"></button>
   </div>
 
-  <div class="container">
-    <p class="header-text">Password Database</p>
-    <div class="top-search" style="display: inline-block;">
-      <input id="db-search" class="text-search" type="text" maxlength="100" style="float: left;" placeholder="Search by password name">
-      <div id="db-search-submit" class="search-button">
-        <i class="fas fa-search"></i>
+  <div class="container close-shadow has-background-white is-clipped px-2 pb-4 my-4">
+    <p class="header-underline font-bebas is-size-2">Password Database</p>
+    <div class="columns">
+      <div class="column is-narrow">
+        @include('templates/navigation-template')
       </div>
-      <button id="add-password" class="green-button" style="margin-left: 50px; margin-top: 20px; height: 40px;"><i class="fas fa-plus"></i> Add A New Password</button>
-    </div>
+      <div class="column">
+        <div class="columns mt-2 is-multiline">
+          <div class="column is-7 field has-addons">
+            <div class="control is-expanded">
+              <input id="db-search" class="input text-search" type="text" maxlength="100" placeholder="Search by password name">
+            </div>
+            <div class="control">
+              <button id="db-search-submit" class="button is-primary" aria-label="Submit database filter search">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="column columns">
+            <div class="control column">
+              <button id="add-password" class="is-primary button is-fullwidth"><i class="fas fa-plus pr-2"></i> Add A New Password</button>
+            </div>
+            <div class="field column">
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="sort-option">
+                    <option>Alphabetical</option>
+                    <option>Last Updated</option>
+                    <option>Expiration Date</option>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <i class="fas fa-sort-amount-down"></i>
+                </div>
+              </div>
+            </div>
 
-    <div id="password-panels">
-      @foreach ($passwords as $password)
-        <div class="pw-panel no-select" data-pwname="{{ $password->password_name }}" data-pid="{{ $password->id }}">
-          <div class="date-field">
-            <span class="day-counter" style="color:{{ $password->ExpirationColor }}">{{ $password->DaysUntilExpiration }}&nbsp;</span>days
           </div>
-          <div class="panel-right">
-            <h3 class="panel-title">{{ $password->LengthCorrectedName }}</h3>
-            <p class="subtitle">{{ $password->username_email ?? ''}}</p>
-            <p class="subtitle">Last Updated: {{ $password->updated_at->format('m/d/y') ?? '-'}}</p>
-          </div>
-          <p class="panel-links"><i title="Copy to Clipboard" class="fas fa-copy copy-button"></i></p>
         </div>
-      @endforeach
+
+        <div id="password-panels" class="columns is-mobile is-multiline">
+          @foreach ($passwords as $password)
+          <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
+            <div class="card pw-panel box px-2 py-1 is-full-mobile is-unselectable" data-pwname="{{ $password->password_name }}" data-pid="{{ $password->id }}">
+              <div class="card-content" >
+                <div class="content is-size-6">
+                  <p>
+                    <strong class="is-size-5">{{ $password->LengthCorrectedName }}</strong>
+                    <br>
+                    {{ $password->username_email ?? ''}}
+                    <br>
+                    Last Updated: {{ $password->updated_at->format('m/d/y') ?? 'N/A'}}
+                  </p>
+                </div>
+              </div>
+              <footer class="card-footer">
+                <div class="card-footer-item font-bebas is-size-5 py-1">
+                  Expires In:&nbsp;<span class="is-size-4" style="color:{{ $password->ExpirationColor ?? 'black' }}">{{ $password->DaysUntilExpiration }}</span>&nbsp;days
+                </div>
+                <div class="card-footer-item is-size-4">
+                  <i title="Copy to Clipboard" class="fas fa-copy copy-button hover-darker"></i>
+                </div>
+              </footer>
+              <div class="level is-mobile is-clipped">
+
+              </div>
+            </div>
+          </div>
+          @endforeach
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -100,10 +155,10 @@
     var searchTerm = $('#db-search').val();
     $(".pw-panel").each(function(index) { //Iterate every password panel
       if (String($(this).data('pwname')).toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0){ //Case-insenitive check for the search term within the 'pwname' data field
-        $(this).fadeIn(200);
+        $(this).parent().fadeIn(200);
       }
       else{
-        $(this).fadeOut(200);
+        $(this).parent().fadeOut(200);
       }
     });
   }
@@ -135,22 +190,22 @@
     $("#last_updated").text("Last Updated: " + data.updated_at);
     $("#expires_in").text("Password Expires In: " + data.DaysUntilExpiration + " days");
 
-    $("#pw-edit-modal").show();
+    $("#pw-edit-modal").addClass("is-active");
     $("#password_name").focus();
   }
 
   function addPasswordPanel(panel_data, replace_pid = false){
     var new_panel = "\
-    <div class='pw-panel no-select' data-pwname=\"" + String(panel_data.password_name) + "\" data-pid=" + panel_data.id + ">\
-      <div class='date-field'>\
-        <span class='day-counter' style='color: " + panel_data.ExpirationColor + "'>" + panel_data.DaysUntilExpiration + "&nbsp;</span>days\
-      </div>\
-      <div class='panel-right'>\
-        <h3 class='panel-title'>" + panel_data.LengthCorrectedName + "</h3>\
-        <p class='subtitle'>" + panel_data.username_email + "</p>\
-        <p class='subtitle'>Last Updated: " + new Date(panel_data.updated_at).toISOString().slice(0,10) + "</p>\
-      </div>\
-      <p class='panel-links'><i class='fas fa-copy copy-button'></i></p>\
+    <div class='pw-panel is-unselectable' data-pwname=\"" + String(panel_data.password_name) + "\" data-pid=" + panel_data.id + ">\
+    <div class='date-field'>\
+    <span class='day-counter' style='color: " + panel_data.ExpirationColor + "'>" + panel_data.DaysUntilExpiration + "&nbsp;</span>days\
+    </div>\
+    <div class='panel-right'>\
+    <h3 class='panel-title'>" + panel_data.LengthCorrectedName + "</h3>\
+    <p class='subtitle'>" + panel_data.username_email + "</p>\
+    <p class='subtitle'>Last Updated: " + new Date(panel_data.updated_at).toISOString().slice(0,10) + "</p>\
+    </div>\
+    <p class='panel-links'><i class='fas fa-copy copy-button'></i></p>\
     </div>\
     ";
 
@@ -199,7 +254,7 @@
       else{
         addPasswordPanel(data);
       }
-      $('#pw-edit-modal').hide();
+      $('#pw-edit-modal').removeClass("is-active");
       displayNotification("success", "Password updated successfully", 5000);
     })
     .fail(function(data){
@@ -227,7 +282,7 @@
     .done(function(data){
       displayNotification("success", "Password deleted successfully", 5000);
       $(".pw-panel[data-pid=" + $('#password_id').val() + "]").remove();
-      $("#pw-edit-modal").hide();
+      $("#pw-edit-modal").removeClass("is-active");
     })
     .fail(function(data){
       if (data.status = 422){
@@ -282,8 +337,9 @@
     });
   });
 
-  $('.modal-close-btn').click(function() {
-    $(this).closest(".modal").hide();
+  $('.modal-background,.modal-close').click(function() {
+    $('#pw-edit-modal').removeClass("is-active");
   });
   </script>
 </body>
+</html>

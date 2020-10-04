@@ -29,7 +29,7 @@ function storeDerivedKey(password) {
 
 function removeDerivedKey() {
   if (sessionStorage.getItem("derivedSecretKey") !== null) {
-    sessionStorage.removeItem("derivedSecretKey");  
+    sessionStorage.removeItem("derivedSecretKey");
   }
 }
 
@@ -43,12 +43,12 @@ function displayNotification(notification_type = "error", error_message, fade_ti
   }
 
   if ($.type(error_message) == "string"){
-    $("#" + notif_elem + " .error-display-box span").text(error_message);
+    $("#" + notif_elem + " .notification-text-box").text(error_message);
   }
   else{ //Handle multiple errors passed as an object
-    $("#" + notif_elem + " .error-display-box span").text(""); //Clear out in case of multiple appends
+    $("#" + notif_elem + " .notification-text-box").text(""); //Clear out in case of multiple appends
     $.each(error_message, function(index, value){
-      $("#" + notif_elem + " .error-display-box span").append('<strong>' + index + '</strong>: ' + value + '<br>');
+      $("#" + notif_elem + " .notification-text-box").append('<strong>' + index + '</strong>: ' + value + '<br>');
     });
   }
 

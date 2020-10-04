@@ -1,67 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
 @include('templates/head-tag', ['title' => 'BullPass - Login'])
 
-<body style="background-image: url('images/funky-lines.png');">
+<body>
 
   @include('templates/status-notifications')
 
-  <div class="login-card">
-    <p class="header-text" style="text-align: center; margin-top: 0px;">Login</p>
-    <form id="login-form" method="POST" action="{{ route('login') }}" style="margin: 0px;">
-      @csrf
+    <div class="login-card close-shadow px-3 pt-2 has-background-white">
+      <p class="header-underline font-bebas is-size-2	has-text-centered mb-2">Login</p>
+      <form id="login-form" method="POST" action="{{ route('login') }}" style="margin: 0px;">
+        @csrf
 
-      <label>Email Address</label><br>
-      <input id="email" type="email" maxlength="255" class="{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-      @if ($errors->has('email'))
-      <span class="invalid-feedback">
-        <strong>{{ $errors->first('email') }}</strong>
-      </span>
-      @endif
+        <div class="field">
+          <label for="email" class="label font-bebas has-text-weight-light is-size-5 mb-0">Email Address</label>
+          <div class="control">
+            <input id="email" type="email" maxlength="255" class="input is-expanded {{ $errors->has('email') ? ' is-danger' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+          </div>
+          @if ($errors->has('email'))
+          <span class="help is-danger">
+            {{ $errors->first('email') }}
+          </span>
+          @endif
+        </div>
 
-      <br>
+        <div class="field">
+          <label for="password" class="label font-bebas has-text-weight-light is-size-5 mb-0">Password</label>
+          <div class="control">
+            <input id="password" type="password" maxlength="255" class="input is-expanded {{ $errors->has('password') ? ' is-danger' : '' }}" name="password" required >
+          </div>
+          @if ($errors->has('password'))
+          <span class="help is-danger">
+            {{ $errors->first('password') }}
+          </span>
+          @endif
+        </div>
 
-      <label>Password</label><br>
-      <input id="password" type="password" maxlength="255" class="{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-      @if ($errors->has('password'))
-      <span class="invalid-feedback">
-        <strong>{{ $errors->first('password') }}</strong>
-      </span>
-      @endif
+        <div class="field">
+          <button type="submit" class="button font-bebas is-primary is-size-5 is-fullwidth">Login</button>
+        </div>
 
-      <br>
+        <div class="mb-1 has-text-centered">
+          <a class="has-text-grey-dark hover-darker is-size-6" href="{{ route('register') }}">Don't Already Have an Account?</a>
+        </div>
 
-      <div class="center-wrapper">
-        <button id="login-button" type="submit" class="login-button">Login</button>
-      </div>
-
-      <div class="center-wrapper" style="margin: 10px 0px 10px 0px;">
-        <a class="login-subtext subtitle" href="{{ route('register') }}">Don't Already Have an Account?</a>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="{{ url('js/app.js') }}"></script>
   <script src="{{ url('js/encryption-libs/sha256.js') }}"></script>
   <script type="text/javascript">
 
-  function storeDerivedKey() {
-    if (typeof(Storage) !== "undefined") {
-      sessionStorage.derivedSecretKey = CryptoJS.SHA256( $("#password").val() );
-    }
-    else {
+  $("#login-form").submit(function(event) {
+    if (!isStorageCompatible()) { //If browser does not supports session storage
+      event.preventDefault();
       displayNotification("error", "Sorry, your browser does not support web storage. This application will not be compatible.");
     }
-  }
-
-  $("#login-form").submit(function(event) {
-    var verify = verifyPasswordReqs( $("#password").val() );
-    if (verify !== true){
+    else if (!verifyPasswordReqs( $("input[type='password']").val()) ) { //If password doesn't meet reqs
       event.preventDefault();
       displayNotification("error", verify);
-      $("#password").addClass('is-invalid');
+      $("#password").addClass('is-danger');
     }
     else{
-      storeDerivedKey();
+      storeDerivedKey( $("#password").val() );
     }
   });
   </script>
 </body>
+</html>

@@ -1,8 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
 @include('templates/head-tag', ['title' => 'Account Options'])
 
 <body>
   <input type="hidden" id="_token" value="{{ csrf_token() }}">
-  @include('templates/left-nav')
+  @include('templates/navigation-template')
   @include('templates/status-notifications')
 
   <div class="container">
@@ -11,7 +13,7 @@
     <fieldset class="generator-fields">
       <legend>E-mail Address</legend>
       <label>E-mail Address</label><br>
-      <input class="text-search-small no-select" type="text" value="{{$user->email}}" disabled>
+      <input class="text-search-small is-unselectable" type="text" value="{{$user->email}}" disabled>
     </fieldset>
 
     <fieldset class="generator-fields">
@@ -67,7 +69,7 @@
     </fieldset>
 
     <div class="generator-fields" style="margin-bottom: 20px;">
-      <button class="green-button" id="save-account-options"><i class="fas fa-save"></i> Save Settings</button>
+      <button class="is-primary button" id="save-account-options"><i class="fas fa-save"></i> Save Settings</button>
     </div>
 
   </div>
@@ -158,3 +160,4 @@
   });
   </script>
 </body>
+</html>
