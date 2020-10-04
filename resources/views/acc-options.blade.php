@@ -71,10 +71,10 @@
     </div>
 
   </div>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="js/app_functions.js"></script>
-  <script src="{{ url('js/aes.js') }}"></script>
-  <script src="{{ url('js/sha256.js') }}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="{{ url('js/app.js') }}"></script>
+  <script src="{{ url('js/encryption-libs/aes.js') }}"></script>
+  <script src="{{ url('js/encryption-libs/sha256.js') }}"></script>
   <script type="text/javascript">
   function postSettingsUpdate(){
     $('#save-account-options').prop("disabled", true);

@@ -1,5 +1,5 @@
 // Takes a string of a password and returns "true" when it is valid, and an error message when it is not.
-function verifyPasswordReqs(pwString){
+function verifyPasswordReqs(pwString) {
   var valid = true;
   if (/[!@#$%^&*()\-_\=\+]/.test(pwString) == false){
     valid = "Password must contain one of the symbols: !@#$%^&*()-_=+";
@@ -17,6 +17,20 @@ function verifyPasswordReqs(pwString){
     valid = "Password must be between 8 and 16 characters";
   }
   return valid;
+}
+
+function isStorageCompatible() {
+  return (typeof(Storage) !== "undefined");
+}
+
+function storeDerivedKey(password) {
+    sessionStorage.derivedSecretKey = CryptoJS.SHA256(password);
+}
+
+function removeDerivedKey() {
+  if (sessionStorage.getItem("derivedSecretKey") !== null) {
+    sessionStorage.removeItem("derivedSecretKey");  
+  }
 }
 
 // Displays the success or failure notification at the top of the page.
